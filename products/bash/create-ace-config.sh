@@ -96,7 +96,7 @@ mkdir -p $CURRENT_DIR/tmp
 mkdir -p $CURRENT_DIR/DefaultPolicies
 
 echo "[INFO]  Creating mq policy"
-cat << EOF > $CURRENT_DIR/DefaultPolicies/default.policyxml
+cat << EOF > $CURRENT_DIR/DefaultPolicies/MQEndpointPolicy.policyxml
 <?xml version="1.0" encoding="UTF-8"?>
 <policies>
   <policy policyType="MQEndpoint" policyName="MQEndpointPolicy" policyTemplate="MQEndpoint">
@@ -112,7 +112,7 @@ cat << EOF > $CURRENT_DIR/DefaultPolicies/default.policyxml
   </policy>
 </policies>
 EOF
-$DEBUG && echo -e "[DEBUG] mq policy:\n$(cat -n $CURRENT_DIR/DefaultPolicies/default.policyxml)"
+$DEBUG && echo -e "[DEBUG] mq policy:\n$(cat -n $CURRENT_DIR/DefaultPolicies/MQEndpointPolicy.policyxml)"
 
 echo -e "\n----------------------------------------------------------------------------------------------------------------------------------------------------------\n"
 
@@ -150,15 +150,15 @@ $DEBUG && echo -e "[DEBUG] postgres policy:\n$(cat -n $CURRENT_DIR/DefaultPolici
 echo -e "\n----------------------------------------------------------------------------------------------------------------------------------------------------------\n"
 
 echo "[INFO] Creating basic auth policy"
-cat << EOF > $CURRENT_DIR/DefaultPolicies/BasicAuth.policyxml
+cat << EOF > $CURRENT_DIR/DefaultPolicies/BasicAuthPolicy.policyxml
 <policies>
-  <policy policyType="SecurityProfiles" policyName="SecProfLocal">
+  <policy policyType="SecurityProfiles" policyName="BasicAuthPolicy">
     <authentication>Local</authentication>
     <authenticationConfig>basicAuthOverride</authenticationConfig>
   </policy>
 </policies>
 EOF
-$DEBUG && echo -e "[DEBUG] basic auth policy:\n$(cat -n $CURRENT_DIR/DefaultPolicies/BasicAuth.policyxml)"
+$DEBUG && echo -e "[DEBUG] basic auth policy:\n$(cat -n $CURRENT_DIR/DefaultPolicies/BasicAuthPolicy.policyxml)"
 
 echo -e "\n----------------------------------------------------------------------------------------------------------------------------------------------------------\n"
 
@@ -177,7 +177,7 @@ echo "[INFO] Creating server conf"
 cat << EOF > $CURRENT_DIR/tmp/server.conf.yaml
 serverConfVersion: 1
 forceServerHTTPS: true
-forceServerHTTPSecurityProfile: '{forceServerHTTPSecurityProfile}:SecProfLocal'
+forceServerHTTPSecurityProfile: '{DefaultPolicies}:BasicAuthPolicy'
 ResourceManagers:
   HTTPSConnector:
     KeystoreFile: '/home/aceuser/keystores/keystore.p12'
