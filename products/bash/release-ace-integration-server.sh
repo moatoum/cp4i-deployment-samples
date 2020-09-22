@@ -82,7 +82,7 @@ spec:
   router:
     timeout: 120s
   service:
-    endpointType: http
+    endpointType: https
   useCommonServices: true
   version: 11.0.0
 EOF

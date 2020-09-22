@@ -22,7 +22,7 @@
 NAMESPACE="cp4i"
 DEBUG=false
 TYPES=("serverconf" "keystore" "policyproject" "setdbparms")
-FILES=("tmp/serverconf.yaml" "tmp/keystore.p12" "DefaultPolicies" "tmp/setdbparms")
+FILES=("tmp/server.conf.yaml" "tmp/keystore.p12" "DefaultPolicies" "tmp/setdbparms.txt")
 NAMES=("ace-serverconf" "ace-keystore" "ace-policyproject" "ace-setdbparms")
 CURRENT_DIR=$(dirname $0)
 CONFIG_YAML=$CURRENT_DIR/tmp/configuration.yaml
@@ -45,7 +45,7 @@ function buildConfigurationCR {
   echo "  name: $name" >> $CONFIG_YAML
   echo "  namespace: $NAMESPACE" >> $CONFIG_YAML
   echo "spec:" >> $CONFIG_YAML
-  echo "  contents: $(base64 -w0 $file)" >> $CONFIG_YAML
+  echo "  contents: $(base64 $file)" >> $CONFIG_YAML
   echo "  type: $type" >> $CONFIG_YAML
   echo "---" >> $CONFIG_YAML
 }
@@ -174,7 +174,7 @@ $DEBUG && echo -e "[DEBUG] policy descriptor:\n$(cat -n $CURRENT_DIR/DefaultPoli
 echo -e "\n----------------------------------------------------------------------------------------------------------------------------------------------------------\n"
 
 echo "[INFO] Creating server conf"
-cat << EOF > $CURRENT_DIR/tmp/serverconf.yaml
+cat << EOF > $CURRENT_DIR/tmp/server.conf.yaml
 serverConfVersion: 1
 forceServerHTTPS: true
 forceServerHTTPSecurityProfile: '{forceServerHTTPSecurityProfile}:SecProfLocal'
@@ -184,7 +184,7 @@ ResourceManagers:
     KeystoreType: 'PKCS12'
     KeystorePassword: 'brokerKeystore::password'
 EOF
-$DEBUG && echo -e "[DEBUG] server conf:\n$(cat -n $CURRENT_DIR/tmp/serverconf.yaml)"
+$DEBUG && echo -e "[DEBUG] server conf:\n$(cat -n $CURRENT_DIR/tmp/server.conf.yaml)"
 
 echo -e "\n----------------------------------------------------------------------------------------------------------------------------------------------------------\n"
 
@@ -204,12 +204,12 @@ $DEBUG && echo -e "[DEBUG] p12:\n$(openssl pkcs12 -nodes -in $KEYSTORE -password
 
 echo -e "\n----------------------------------------------------------------------------------------------------------------------------------------------------------\n"
 
-echo "[INFO]  Creating setdbparms"
-cat << EOF > $CURRENT_DIR/tmp/setdbparms
+echo "[INFO]  Creating setdbparms.txt"
+cat << EOF > $CURRENT_DIR/tmp/setdbparms.txt
 local::basicAuthOverride $API_USER $API_PASS
 brokerKeystore::password ignore $KEYSTORE_PASS
 EOF
-$DEBUG && echo -e "[DEBUG] setdbparms:\n$(cat -n $CURRENT_DIR/tmp/setdbparms)"
+$DEBUG && echo -e "[DEBUG] setdbparms:\n$(cat -n $CURRENT_DIR/tmp/setdbparms.txt)"
 
 echo -e "\n----------------------------------------------------------------------------------------------------------------------------------------------------------\n"
 
