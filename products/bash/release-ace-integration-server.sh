@@ -71,8 +71,6 @@ spec:
    containers:
      runtime:
        image: ${is_image_name}
-  configurations:
-  - ace-policyproject
   designerFlowsOperationMode: disabled
   license:
     accept: true
@@ -85,6 +83,11 @@ spec:
     endpointType: https
   useCommonServices: true
   version: 11.0.0
+  configurations:
+    - ace-keystore
+    - ace-policyproject
+    - ace-serverconf
+    - ace-setdbparms
 EOF
 
 # -------------------------------------- INSTALL JQ ---------------------------------------------------------------------
