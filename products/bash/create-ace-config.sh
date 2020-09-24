@@ -74,7 +74,9 @@ metadata:
   name: ace-api-creds
   namespace: $NAMESPACE
 stringData:
-  auth: "${API_USER}:${API_PASS}"
+  user: $API_USER
+  pass: $API_PASS
+  auth: "$API_USER:$API_PASS"
 type: Opaque
 EOF
 
@@ -193,7 +195,7 @@ CERTS_KEY_BUNDLE=$CURRENT_DIR/tmp/certs-key.pem
 CERTS=$CURRENT_DIR/tmp/certs.pem
 KEY=$CURRENT_DIR/tmp/key.pem
 KEYSTORE=$CURRENT_DIR/tmp/keystore.p12
-oc get secret -n openshift-config-managed router-certs -o json | jq -r '.data | .[]' | base64 -d > $CERTS_KEY_BUNDLE
+oc get secret -n openshift-config-managed router-certs -o json | jq -r '.data | .[]' | base64 --decode > $CERTS_KEY_BUNDLE
 $DEBUG && echo -e "[DEBUG] certs+key bundle:\n$(cat -n $CERTS_KEY_BUNDLE)"
 openssl crl2pkcs7 -nocrl -certfile $CERTS_KEY_BUNDLE | openssl pkcs7 -print_certs -out $CERTS
 $DEBUG && echo -e "[DEBUG] certs:\n$(cat -n $CERTS)"
