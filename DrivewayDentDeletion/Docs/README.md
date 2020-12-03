@@ -15,7 +15,7 @@ This demo shows how to use multiple capabilities of CP4I working together to pro
 
 ![Driveway Dent Deletion Solution](images/DrivewayDentDeletionSolutionDiagram.png)
 
-A full description of the demo scenario is [here](Scenario.md)
+A full description of the demo scenario is [here](scenario.md)
 
 ## Key Demo Highlights
 * Integration solution using multiple CP4I capabilities working together
@@ -50,3 +50,11 @@ We'll give you instructions as to how to do this but you will need a github acco
 
 If you already have a github account, you can use that.
 </details>
+
+## Structure of the demo
+The demo is structured around a number of different scenarios or stories. These can be used in combination or stand-alone: it's your choice.
+
+### Story 1: Deploy the Solution using a CI/CD pipeline
+When integration components have been built and unit tested, we want to create container images for them and then deploy them all together using a deployment pipeline that deploys, configures and tests all of the components automatically without manual intervention.
+
+Story 1 Instructions are [here](story1/README.md)
