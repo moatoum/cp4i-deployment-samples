@@ -1,32 +1,25 @@
-# Driveway Dent Deletion Scenario details
-## Business Scenario
-The business scenario for this demo is a common one where a user wishes to enter a request for a service or product and have multiple quotes for that service returned from different vendors so that they can choose which one is best for them.
+# Driveway Dent Deletion Demo
+## Story 3: Applying a fix pack/version update 'live' with no downtime.
+## UNDER CONSTRUCTION
 
-It might not be a case of “I’ll take the cheapest” as that may  not be available quickly enough, in the right colour, or at the right time. For example when requesting quotes to fly from New York to Los Angeles, a direct flight may be more expensive than a stop over: Whether it is worth the extra money to fly direct is up to the user.
+As we move to Agile Integration, not only can we independently deploy application updates and fixes, we can deploy product fixpacks in the same way – all with zero downtime.
 
-Our scenario concerns someone who has incurred minor damage to their car – it’s not serious, more of a small dent. They want it repaired at home, on their driveway by a mobile repairer.
+![Zero Downtime update and rollback](images/DDDZeroDowntimeUpdateAndRollback.png)
 
-![Driveway Dent Deletion Solution Diagram](images/DrivewayDentDeletionBusinessStoryDiagram.png)
+We are going to use the same pipeline as for Story 1: The difference is that the .bar (executable) file for the API App Connect flow will be different in V2 (it will return a different result from the API call so you can see it).
 
-They use an app to get some quotes from three repair companies. They provide their name, eMail, License Plate, State and the number of dents in each part of their car.
+When we run the pipeline with the changed .bar file, it will create a new container image containing that .bar file and deploy it. As we will use a Kubernetes rolling update, the API will remain ‘live’ throughout the deployment and the new version will ‘roll over’ the previous one.
 
-Each company provides a quote for the repair and the earliest date that they could perform the repair. These quotes are returned to the user but also stored in a database so that the user can retrieve them for future reference.
+We will show this by using an automated test script which will keep a continuous load on the API so that you can see live service is maintained.
 
-In a real-world application, we could have the user accepting the quote, changing their appointment time etc, all through the API. In this demo, we supply the source for all of the artefacts so you can extend the scenario if you wish.
+To roll back, we simply change the .bar file back to the previous version and re-run the pipeline – again, the rollback is ‘live’.
 
-## Demo Architecture
-We will use the following components for this demo:
-![Driveway Dent Deletion Architecture Diagram](images/DrivewayDentDeletionSolutionDiagram.png)
-
-We will create an API which will expose two REST Operations: One to request a quote and one to retrieve a previous quote based on the quote ID.
-
-When the user calls the API to get a quote using the POST operation, an App Connect API integration flow will request quotes for the repair from three different providers:
-* ACME Auto Accidents
-* Bernie’s Bashed Bumpers
-* Chris’s Crumpled Cars
-
-(We deliberately chose unisex names Bernadette/Bernard, Christine/Christopher – it’s really just to get repairers with Initials of A, B and C!)
-
-Each of the three companies will return a quote, which will get aggregated by the flow, stored in the database and then returned to the user, using a reference quoteID
-
-After requesting a quote, the user can then retrieve the quote again if they wish using the GET operation and the quote ID. At this point the App Connect API flow just retrieves the quote from the database.
+## Story Flow / List of Tasks
+1. Ensure that the integration solution from [Story1](../story1/README.md) is deployed and running.
+1. Create continuous load on the solution to simulate live users accessing it. Ensure you can see calls and responses running.
+1. Update the version of one (or more) App Connect integrations to version2 (change to a V2 .bar file) and commit the change to git.
+1. The change in git fires the webhook which starts the deployment Pipeline
+1. Watch the pipeline build and deploy the new version of the integration.
+1. During the deployment, keep watching the continuous test load: you will see the responses change from 'V1' to 'V2'. Note that there is no interruption of service.
+1. When the new version is deployed (V2) we may want to roll back to version 1. Change the integrations in github back to V1 and commit.
+1. The pipeline will run again and redeploy V1. Again, the continuous load will carry on running and you will see the version change.

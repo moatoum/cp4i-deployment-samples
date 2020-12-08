@@ -58,3 +58,30 @@ The demo is structured around a number of different scenarios or stories. These 
 When integration components have been built and unit tested, we want to create container images for them and then deploy them all together using a deployment pipeline that deploys, configures and tests all of the components automatically without manual intervention.
 
 Story 1 Instructions are [here](story1/README.md)
+
+### Story 2: Deploy a new version of the integration with Zero Downtime. Also Rollback.
+When we make changes to an integration e.g. from V1 to V2, we want to be able to deploy that integration with zero downtime and with minimal impact to consumers of the integration.
+
+In addition, if we encounter issues with our new version, we want to easily be able to roll-back to the previous version.
+
+Story 2 Instructions are [here](story2/README.md)
+
+### Story 3: Apply a fixpack to or upgrade a version of the IBM software with zero downtime.
+Similarly, when we want to apply an upgrade to the IBM software e.g. a fixpack or version upgrade, we want to be able to deploy that integration with zero downtime and with minimal impact to consumers of the integration.
+
+In addition, if we encounter issues with our new version, we want to easily be able to roll-back to the previous version.
+
+We also want to only be able to apply the fixpack to one integration at a time without impacting other integrations.
+
+Story 3 Instructions are [here](story3/README.md)
+
+### Story 4: Using CI/CD Piplines with Route to Live and multiple environments.
+Being able to deploy integrations using pipelines is a good thing. Being able to take changes from DEV through to PROD automatically with a pipeline really increases the value.
+
+If all of the tests pass at each deployment, it's possible to extend this out all the way to PROD.
+
+This story shows deploying the solution to the DEV environment after which automated tests are run to make sure that the deployment is successful. If it is the solution is then deployed to a TEST environment and tested again.
+
+This not only shows deploying a full pipeline across two environments but also shows how the integration components are bound together so that they call the correct instances of each other e.g. the DEV API Connect calls the DEV App Connect, TEST App Connect calls TEST MQ etc etc.
+
+Story 4 Instructions are [here](story4/README.md)
