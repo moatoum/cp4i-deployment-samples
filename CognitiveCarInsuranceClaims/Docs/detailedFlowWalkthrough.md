@@ -106,7 +106,7 @@ We want to add a contact for this case, but we need the contact ID from Salesfor
 This is a very common integration issue – systems need IDs and not names. No problem, sorting this is simple in Designer!
 
 Click on `Retrieve Contacts`
-![Salesforce Retrieve Contacts](images/flowWalkthrough-SalesForceRetrieveContacts.png)
+![Salesforce Retrieve Contacts](images/flowWalkthrough-SalesforceRetrieveContacts.png)
 We’re going to use 'Andy Young’ as our contact – he’s the contact for the insurance company that sends customers. Salesforce Developer Accounts have a pre-populated set of data that you can use to test. ‘Andy Young’ is one of those pre-populated contacts. We will hard-code his name for speed in this demo.
 
 But how do we know exactly what ‘Full Name’ means? Does it have ‘Mr?’ in it? Is it ‘Andy’ or ‘Andrew’? Do we need his middle name?
