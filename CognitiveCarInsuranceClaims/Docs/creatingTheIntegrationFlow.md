@@ -43,3 +43,14 @@ We have a flow to use already stored in the Asset Repository: We’re going to i
 It also avoids a LOT of screenshots and ‘click here, click there, type this instructions’ – you could even probably work out how the flow works just from watching the video here: https://www.youtube.com/watch?v=TRzO26kawu4 but we’ll step you through it in this lab.
 
 There is a lot of detailed designer flow documentation for when you want to delve deeper – a good place to start is the IBM App Connect Knowledge Center.
+
+Click on the ‘+’ sign to the right on the ‘Car Insurance Cognitive API Lab Short’ asset and Create from the Asset (ensure you select the ‘Short’ version – the other one is for the extension scenario)
+![Importing the Asset](images/integrationFlow-importingTheAsset.png)
+
+Integration flows are stored in the Asset Repository as .yaml source files – they look a lot prettier in the tooling though!
+
+## Reviewing the Integration flow
+![Shortcut](images/shortcut.png)
+This section can take some time. If you’re more interested as to how the flow is built, go through this section. If you may be short on time, as the flow is pre-built and we won’t change it in the lab,  you can skip straight to the [‘Starting the flow’](startingTheFlow.md) section and come back here later if you wish.  There are lots of screen shots, so you can read this demo flow walkthrough afterwards at your leisure.
+
+Next Steps: click to [Reviewing the Integration Flow](reviewingTheIntegrationFlow.md)
