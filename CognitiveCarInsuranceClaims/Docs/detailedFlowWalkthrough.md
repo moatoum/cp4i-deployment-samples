@@ -7,11 +7,13 @@ Designer automatically creates an API “Request” and “Response” node for 
 
 Click on the `Request` node:
 ![Designer API Request Node](images/flowWalkthrough-Request.png)
+
 Note how the request body is created from the model – and sample data is automatically generated. When building an API, there is literally nothing to do here – it’s done for you.
 
 ### 2. Use IBM Watson Image Recognition to analyse the photo
 If it is not a valid picture, Watson will return an error immediately to the user calling the API.
 ![Visual Recognition Node](images/flowWalkthrough-visualRecognition.png)
+
 We use the built-in Watson Visual Recognition connector that we configured earlier. Note that we selected `App Connect Trial` account here. If you had it named incorrectly (e.g. `Account 1`) then you would have an error. To fix it, change to `App Connect Trial` in the pull down.
 
 The `Classifier ID` is to tell Watson which image training data set, or classifier it should use. You can train Watson with your own image data e.g. for products your company sells or assets it uses. If you create a custom classifier, the connector will go and find it and offer it to you in a drop-down. We will use the default ‘out of the box’ classifier.
@@ -24,6 +26,7 @@ You can see that we’ve mapped our `PhotoOfCar` field from our request. You can
 
 Click the hamburger (three lines) pull down button next to the field:
 ![Mapping Fields Menu](images/flowWalkthrough-mappingFields.png)
+
 All of the fields that are in the flow so far are available – just click on the one you want. This is how ‘mapping’ is done in designer – it’s like filling in cells in a spreadsheet.
 
 Make sure `PhotoOfCar` is selected (or don’t change it) before you move on.
@@ -35,6 +38,7 @@ For example, for one of our test pictures, we will use a picture of a Subaru SUV
 
 Note the ‘classes’ that Watson returns – these are the same classes that we will be using in our flow.
 ![Watson Studio with Car](images/flowWalkthrough-watsonStudioCar.png)
+
 (This screenshot is from Watson Studio – Available for free in the IBM Cloud – search for it and you can try it yourself with your cloud account and your Visual Recognition Service instance)
 
 We’re going to set variables to check for three things:
@@ -44,14 +48,17 @@ We’re going to set variables to check for three things:
 
 
 ![ImageCar variable](images/flowWalkthrough-imageCarVariable.png)
+
 Let’s look at ‘is there a car?’ – `imageCar`
 Click on the menu on the right, then expand `IBM Watson Visual Recognition`
 
 The `Available Inputs` menu appears. You can see we now have fields from both the request and IBM Watson Visual Recognition.
 
 ![Classify Images Response](images/flowWalkthrough-classifyImagesResponse.png)
+
 If you scroll down, you’ll see we get down to `Image->Images[]->Classifiers[]->Classes[]->Class name` (together with the Score)
 ![Image Class Name](images/flowWalkthrough-imageClassName.png)
+
 What does this mean?
 
 It means Watson has returned an `Image` object.
@@ -66,6 +73,7 @@ App Connect does it by using a formula – just like a spreadsheet.
 Close the pull-down and click on the `Classes` bubble in the `imageCar` field. Click `Edit expression`
 ![ImageCar Edit Expression](images/flowWalkthrough-imageCarEditExpression1.png)
 ![ImageCar Edit Expression](images/flowWalkthrough-imageCarEditExpression2.png)
+
 What we did is click on the hierarchy pull down to build a query that looks like this:
 ``$IBMWatsonVisualRecognitionClassifyimages.classify_images.classifiers.classes[class=’car’]``
 (we had to manually add the ``[class=’car’]`` part at the end)
@@ -78,6 +86,7 @@ We use the same approach  to populate `imagePerson` using ``[class=’car’]`` 
 
 If you want to more easily see the query expression, then hover over the `classes` bubble e.g. here:
 ![ImageCar roadster expression](images/flowWalkthrough-roadsterExpression.png)
+
 All mapping is done the same way - for example, we want a string that joins (concatenates) all of the classes (things that Watson can see) together, separated by commas so it’s Human Readable. For this we use `apply a function` and select `Join` from `String functions`, just like building a spreadsheet formula.
 
 To get the ‘dot hierarchy’, just use the pull down variable explorer. Pick the field you want and the choose `Apply a function`
@@ -92,6 +101,7 @@ We now know if there is a car or not in our image…if there is no car image (i.
 
 We use an App Connect `If` node to visually show us our logic:
 ![IF with no car expression](images/flowWalkthrough-ifNoCar.png)
+
 We visually create an ‘If imagecar is empty’ check. If it is empty, we send a ‘bad request’ response – note that we don’t need to remember that in REST APIs, ‘Bad Request’ is ‘HTTP 400’ – App Connect knows this – just pull the response from the drop down.
 
 We also add a ‘There is no car in this image, please resubmit’ error.
@@ -107,35 +117,46 @@ This is a very common integration issue – systems need IDs and not names. No p
 
 Click on `Retrieve Contacts`
 ![Salesforce Retrieve Contacts](images/flowWalkthrough-SalesforceRetrieveContacts.png)
+
 We’re going to use 'Andy Young’ as our contact – he’s the contact for the insurance company that sends customers. Salesforce Developer Accounts have a pre-populated set of data that you can use to test. ‘Andy Young’ is one of those pre-populated contacts. We will hard-code his name for speed in this demo.
 
 But how do we know exactly what ‘Full Name’ means? Does it have ‘Mr?’ in it? Is it ‘Andy’ or ‘Andrew’? Do we need his middle name?
 
 Change the name to `Andrew Young` and we’ll find out. Note that App Connect gives you the field description to help you out. If you add any expressions such as ``$uppercase(Full Name)`` then the preview (next to the eye) shows you what your field will look like after your expression.
 ![Salesforce Andrew Young](images/flowWalkthrough-salesForceAndrewYoung.png)
+
 Now click the `Test` button
 ![Test SalesForce](images/flowWalkthrough-testSalesForce.png)
+
 We can go straight off to SalesForce to check! App Connect calls the SalesForce connector right in the flow editor and we get a `Failed 404 Not Found` error:
 Click `View details`
 ![SalesForce 404](images/flowWalkthrough-salesForce404.png)
+
 And then we can see the reason - Salesforce returns `No Documents found` - which is what we'd expect (as we know it's 'Andy Young' not 'Andrew Young')
 ![SalesForce No Docs Found](images/flowWalkthrough-salesForceNoDocsFound.png)
+
 You can see the request as well as the response in App Connect -click `request`
 ![SalesForce Request Details](images/flowWalkthrough-salesForceRequestDetails.png)
+
 OK, let’s put the field back to `Andy Young` and try clicking `Test` again:
 ![SalesForce Test Andy Young](images/flowWalkthrough-testAndyYoung.png)
+
 Success! Hooray, let’s check our result! Click `View details`
 ![SalesForce Test Andy Young Details](images/flowWalkthrough-andyYoungViewDetails.png)
+
 And we can see the successful result:
 ![SalesForce Success Results](images/flowWalkthrough-salesForce200Success.png)
+
 There’s our test results, right in the tooling, right from the real system in the cloud. This works with all of the connectors such as Watson in our flows here. It’s a great way of checking your integration calls work the way you want them to without having to test the whole flow.
 
 To further check your results, click on `Contacts/Contact1` and you’ll see:
 ![SalesForce Contact Details](images/flowWalkthrough-contactDetails.png)
+
 All of the data back from Salesforce – in the same format you use to ‘map’ fields - ready to be used, right in the Designer.
 
 Now we have the ID that we need, let’s create our Salesforce case. Click on the `Salesforce – Create case` node. Note that we just re-use the same connector but with a different operation and data.
 ![SalesForce Contact Details](images/flowWalkthrough-salesForceCreateCase.png)
+
 Note that we can see that our contact ID comes from the previous `retrieve contact` SalesForce Call. The Name and email come from the API Request.
 
 The connector ‘knows’ that fields like `Case Type` have a limited number of values in Salesforce – so it automatically converts them into pull-down lists of values for you to choose from.
@@ -147,12 +168,14 @@ To add a photograph, we need to create a salesforce attachment – that’s easy
 
 Click on `Create Attachment`
 ![SalesForce Create Attachment](images/flowWalkthrough-salesForceCreateAttachment.png)
+
 Note that we use the `Case ID` that is a returned value from the `Create Case` connector call – it’s been kept in the flow automatically. We send the `PhotoOfCar` as a `base64` string and we tell Salesforce that the content Type is `image/jpeg`.
 ### 7. Analyse the description of the problem as described by the customer using IBM Watson Tone Analysis.
 We store this in Salesforce for future reference – if the customer is angry or upset, we may wish to take further action or treat them more carefully.
 
 First we’ll use the Watson Tone Analyzer; Click on `Get tone analysis`
 ![Watson Tone Analysis](images/flowWalkthrough-watsonTone.png)
+
 You can see that we've just mapped `DescriptionOfDamage` into the `Text` field before we call the Tone Analyzer.
 
 We'll get the Tone name result back. We don't need to use a 'response' variable or anything - that's all done for us.
@@ -165,6 +188,7 @@ For future enquiries and also an estimate of how long it will take to repair and
 
 Click on the `Response` node – we just fill in the values we want, like all the others. Note also that the `Response` node knows the correct HTTP response for `create/POST` - which is `201` (note - *not* 200 for create/POST!)
 ![Response Node](images/flowWalkthrough-responseNode.png)
+
 Click `Done` we’ve built the flow – let’s start it!
 ![Flow Done](images/flowWalkthrough-flowDone.png)
 
