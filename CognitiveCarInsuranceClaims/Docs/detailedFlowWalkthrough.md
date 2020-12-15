@@ -85,7 +85,7 @@ App Connect automatically scans through the entire hierarchy, sorting out things
 We use the same approach  to populate `imagePerson` using ``[class=’car’]`` and `imageRoadster` ``[class=’roadster’]``.
 
 If you want to more easily see the query expression, then hover over the `classes` bubble e.g. here:
-![ImageCar roadster expression](images/flowWalkthrough-roadsterExpression.png)
+![ImageCar roadster expression](images/flowWalkthrough-roadsterexpression.png)
 
 All mapping is done the same way - for example, we want a string that joins (concatenates) all of the classes (things that Watson can see) together, separated by commas so it’s Human Readable. For this we use `apply a function` and select `Join` from `String functions`, just like building a spreadsheet formula.
 
